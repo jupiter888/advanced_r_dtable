@@ -56,9 +56,8 @@ ggplot(ICHEC)+geom_line(aes(x=hour,y=delta,col=RCP,group=Freq))+facet_grid(.~RCP
 MIROC=cDDF[GCM == "MIROC", .(hour, delta, Freq, RCP)]
 ggplot(MIROC)+geom_line(aes(x=hour,y=delta,col=RCP,group=Freq))+facet_grid(.~RCP)
 
-MOHC
-cDDF[GCM == "MOHC-HadGEM2-ES", .(hour, delta, Freq, RCP)]
-ggplot(MIROC)+geom_line(aes(x=hour,y=delta,col=RCP,group=Freq))+facet_grid(.~RCP)
+MOHC=cDDF[GCM == "MOHC-HadGEM2-ES", .(hour, delta, Freq, RCP)]
+ggplot(MOHC)+geom_line(aes(x=hour,y=delta,col=RCP,group=Freq))+facet_grid(.~RCP)
 
 ######################################################################
 
