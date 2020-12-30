@@ -43,6 +43,7 @@ DDF=DDF[RCP!='historical']
 cDDF=hDDF[DDF, on=c('Duration','Freq','hour','GCM','RCM')]
 cDDF[,delta:=Depth/hDepth]
 cDDF= cDDF[, .(delta=mean(delta)),by=.(GCM,RCM,RCP,Duration,Freq,hour)]
+#plot the delta 
 ggplot(cDDF)+
   geom_line(aes(x=hour,y=delta,col=RCP,lty=RCM))+
   facet_grid(factor(Freq)~GCM)
