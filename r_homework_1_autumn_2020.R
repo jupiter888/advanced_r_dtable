@@ -29,6 +29,7 @@ ddf = function(r, scen = 2070:2100, control = 1970:2000){
 
 #run this on every file in dir using tapply/lapply
 dta<-lapply(dir(pattern="CZ_pr_EUR-11_"),readRDS)
+
 DDF= lapply(dta,ddf)
 #put all ddf together
 names(DDF)=dir(pattern="CZ_pr_EUR-11_")
