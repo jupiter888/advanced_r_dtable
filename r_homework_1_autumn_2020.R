@@ -6,7 +6,6 @@ library(ggplot2)
 dir()
 setwd("~/advanced_r/precip/out")
 getwd
-
 ddf = function(r, scen = 2070:2100, control = 1970:2000){
   yr = if (grepl('historical', r$forc[1])){
     control
@@ -29,22 +28,19 @@ ddf = function(r, scen = 2070:2100, control = 1970:2000){
 
 #run this on every file in dir using tapply/lapply
 dta<-lapply(dir(pattern="CZ_pr_EUR-11_"),readRDS)
-
 DDF= lapply(dta,ddf)
 #put all ddf together
 names(DDF)=dir(pattern="CZ_pr_EUR-11_")
 DDF=rbindlist(DDF, idcol = 'SID')
 DDF = DDF[, .(Duration, Depth, Freq, hour, RCP=sapply(strsplit(SID, '_'), function(x)x[5]), GCM = sapply(strsplit(SID, '_'), function(x)x[4]), RCM = sapply(strsplit(SID, '_'), function(x)x[7]))]
 DDF
-#calculate historical climate data
+
 hDDF=DDF[RCP=='historical', .(Duration, Freq, hour,hDepth=Depth,GCM,RCM)]
 #setnames(hDDF,'Depth', 'hDepth')
 DDF=DDF[RCP!='historical']
-#calculate delta
 cDDF=hDDF[DDF, on=c('Duration','Freq','hour','GCM','RCM')]
 cDDF[,delta:=Depth/hDepth]
 cDDF= cDDF[, .(delta=mean(delta)),by=.(GCM,RCM,RCP,Duration,Freq,hour)]
-#plot the delta 
 ggplot(cDDF)+
   geom_line(aes(x=hour,y=delta,col=RCP,lty=RCM))+
   facet_grid(factor(Freq)~GCM)
